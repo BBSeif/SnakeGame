@@ -215,12 +215,12 @@ public class SnakeGame extends Application {
         // Draw snake
         gc.setFill(Color.GREEN);
         for (Point point : snake) {
-            gc.fillRect(point.x * TILE_SIZE, point.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            gc.fillRect(point.x * TILE_SIZE , point.y * TILE_SIZE , TILE_SIZE, TILE_SIZE);
         }
 
         // Draw fruit
         gc.setFill(Color.RED);
-        gc.fillRect(fruit.x * TILE_SIZE, fruit.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        gc.fillRect(fruit.x * TILE_SIZE, fruit.y * TILE_SIZE,TILE_SIZE, TILE_SIZE);
     }
 
     public static void main(String[] args) {
