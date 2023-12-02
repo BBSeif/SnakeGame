@@ -53,14 +53,17 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 public class SnakeGame extends Application {
 
-    private static final int TILE_SIZE = 10;
+    private static final int TILE_SIZE = 20;
     private static final int WIDTH = 40;
     private static final int HEIGHT = 30;
 
     private int  speed = 5;
+
+    private Color fColor = fruitColor();
 
     private LinkedList<Point> snake;
     private Point fruit;
@@ -175,8 +178,6 @@ public class SnakeGame extends Application {
             button.setOnAction(event -> {
             boolean result = ConfirmBox.display("Title","Are you sure ?");
             System.out.println(result);
-             if (result) {
-             }
             });
             snake.clear();
             snake.add(new Point(WIDTH / 2, HEIGHT / 2));
@@ -191,6 +192,7 @@ public class SnakeGame extends Application {
         if (newHead.x == fruit.x && newHead.y == fruit.y) {
             // Snake ate the fruit
             fruit = createFruit();
+            fColor = fruitColor();
             speed += 5;
         } else {
             // Remove the tail
@@ -213,15 +215,29 @@ public class SnakeGame extends Application {
         gc.clearRect(0, 0, WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
 
         // Draw snake
-        gc.setFill(Color.GREEN);
+        gc.setFill(Color.BLACK);
         for (Point point : snake) {
             gc.fillRect(point.x * TILE_SIZE , point.y * TILE_SIZE , TILE_SIZE, TILE_SIZE);
         }
 
+
         // Draw fruit
-        gc.setFill(Color.RED);
+        gc.setFill(fColor);
         gc.fillRect(fruit.x * TILE_SIZE, fruit.y * TILE_SIZE,TILE_SIZE, TILE_SIZE);
     }
+
+    private Color fruitColor(){
+        Random random = new Random();
+
+        // Generate random values for the RGB components
+        double red = random.nextDouble();
+        double green = random.nextDouble();
+        double blue = random.nextDouble();
+
+        // Create and return a Color object
+        return new Color(red, green, blue, 1.0);
+    }
+
 
     public static void main(String[] args) {
         launch(args);
