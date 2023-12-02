@@ -46,6 +46,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -55,13 +56,16 @@ import java.util.LinkedList;
 
 public class SnakeGame extends Application {
 
-    private static final int TILE_SIZE = 20;
-    private static final int WIDTH = 20;
-    private static final int HEIGHT = 15;
+    private static final int TILE_SIZE = 10;
+    private static final int WIDTH = 40;
+    private static final int HEIGHT = 30;
+
+    private int  speed = 5;
 
     private LinkedList<Point> snake;
     private Point fruit;
     private Direction direction;
+
 
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
@@ -78,6 +82,8 @@ public class SnakeGame extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+
         snake = new LinkedList<>();
         snake.add(new Point(WIDTH / 2, HEIGHT / 2));
         fruit = createFruit();
@@ -92,12 +98,15 @@ public class SnakeGame extends Application {
         Scene scene = new Scene(root, WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
         scene.setOnKeyPressed(e -> handleKeyPress(e.getCode()));
 
+        /**
+         * Control of animation and speed so on
+         */
         new AnimationTimer() {
-            long lastUpdate = 0;
+            long lastUpdate = 2;
 
             @Override
             public void handle(long now) {
-                if (now - lastUpdate >= 1000000000 / 10) {
+                if (now - lastUpdate >= 1000_000_000 / speed) {
                     update();
                     render(gc);
                     lastUpdate = now;
@@ -110,22 +119,35 @@ public class SnakeGame extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Controll center of Snake
+     * it can be controlled by arrow and by W A S D keys!
+     *
+     */
     private void handleKeyPress(KeyCode code) {
         switch (code) {
             case UP:
+            case W:
                 direction = Direction.UP;
                 break;
             case DOWN:
+            case S:
                 direction = Direction.DOWN;
                 break;
             case LEFT:
+            case A:
                 direction = Direction.LEFT;
                 break;
             case RIGHT:
+            case D:
                 direction = Direction.RIGHT;
                 break;
         }
     }
+
+    /**
+     *  Update method works for movement of snake constantly
+     */
 
     private void update() {
         Point head = snake.getFirst();
@@ -146,12 +168,21 @@ public class SnakeGame extends Application {
                 break;
         }
 
+//        to stop program when snake hits the wall!
         if (newHead.x < 0 || newHead.x >= WIDTH || newHead.y < 0 || newHead.y >= HEIGHT || snake.contains(newHead)) {
             // Game over condition
+            Button button = new Button("Game over !" );
+            button.setOnAction(event -> {
+            boolean result = ConfirmBox.display("Title","Are you sure ?");
+            System.out.println(result);
+             if (result) {
+             }
+            });
             snake.clear();
             snake.add(new Point(WIDTH / 2, HEIGHT / 2));
             fruit = createFruit();
             direction = Direction.RIGHT;
+            speed = 5;
             return;
         }
 
@@ -160,21 +191,23 @@ public class SnakeGame extends Application {
         if (newHead.x == fruit.x && newHead.y == fruit.y) {
             // Snake ate the fruit
             fruit = createFruit();
+            speed += 5;
         } else {
             // Remove the tail
             snake.removeLast();
         }
     }
 
+    /**
+     * Creating fruit on random places
+     */
     private Point createFruit() {
         int x, y;
-        do {
-            x = (int) (Math.random() * WIDTH);
-            y = (int) (Math.random() * HEIGHT);
-        } while (snake.contains(new Point(x, y)));
-
+        x = (int) (Math.random() * WIDTH);
+        y = (int) (Math.random() * HEIGHT);
         return new Point(x, y);
     }
+
 
     private void render(GraphicsContext gc) {
         gc.clearRect(0, 0, WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
