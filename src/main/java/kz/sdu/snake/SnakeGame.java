@@ -1,45 +1,4 @@
 package kz.sdu.snake;
-//
-//import javafx.application.Application;
-//import javafx.scene.Scene;
-//import javafx.scene.control.*;
-//import javafx.scene.layout.*;
-//import javafx.stage.Stage;
-//
-//public class HelloApplication extends Application {
-//    Stage window;
-//    Button button;
-//
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
-//
-//
-//    @Override
-//    public void start(Stage stage) throws Exception {
-//        window = stage;
-//
-//        Label label = new Label("Welcome to the First scene !");
-//        button = new Button("Start Game!" );
-//        button.setOnAction(event -> {
-//            boolean result = ConfirmBox.display("Title","Are you sure ?");
-//            System.out.println(result);
-//        });
-////        button1.setOnAction(e -> window.setScene(scene2));
-//
-//        StackPane layout1 = new StackPane();
-//        layout1.getChildren().addAll(label, button);
-//        Scene scene = new Scene(layout1, 200, 300);
-//
-//
-//        window.setScene(scene);
-//        window.setTitle("Snake Game!");
-//        window.show();
-//    }
-
-//}
-
-
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -51,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import kz.sdu.snake.extra.ConfirmBox;
 
 import java.util.LinkedList;
 import java.util.Random;
@@ -70,6 +30,9 @@ public class SnakeGame extends Application {
     private Direction direction;
 
 
+    /**
+     * We use Enum to ensure that we have only four direction command
+     */
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
     }
@@ -82,6 +45,14 @@ public class SnakeGame extends Application {
             this.y = y;
         }
     }
+
+    /**
+     *
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     */
 
     @Override
     public void start(Stage primaryStage) {
@@ -102,7 +73,7 @@ public class SnakeGame extends Application {
         scene.setOnKeyPressed(e -> handleKeyPress(e.getCode()));
 
         /**
-         * Control of animation and speed so on
+         * Control of animation and speed
          */
         new AnimationTimer() {
             long lastUpdate = 2;
@@ -220,12 +191,14 @@ public class SnakeGame extends Application {
             gc.fillRect(point.x * TILE_SIZE , point.y * TILE_SIZE , TILE_SIZE, TILE_SIZE);
         }
 
-
         // Draw fruit
         gc.setFill(fColor);
         gc.fillRect(fruit.x * TILE_SIZE, fruit.y * TILE_SIZE,TILE_SIZE, TILE_SIZE);
     }
 
+    /**
+     *  To get random color for fruit after each eating
+     */
     private Color fruitColor(){
         Random random = new Random();
 

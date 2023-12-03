@@ -1,4 +1,4 @@
-package kz.sdu.snake;
+package kz.sdu.snake.extra;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

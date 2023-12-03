@@ -5,4 +5,6 @@ module kz.sdu.snake {
 
     opens kz.sdu.snake to javafx.fxml;
     exports kz.sdu.snake;
+    exports kz.sdu.snake.extra;
+    opens kz.sdu.snake.extra to javafx.fxml;
 }
