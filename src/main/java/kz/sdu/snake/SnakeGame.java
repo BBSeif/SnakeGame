@@ -12,7 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import kz.sdu.snake.extra.ConfirmBox;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class SnakeGame extends Application {
@@ -30,25 +32,12 @@ public class SnakeGame extends Application {
     private Direction direction;
 
 
-    /**
-     * We use Enum to ensure that we have only four direction command
-     */
-    public enum Direction {
-        UP, DOWN, LEFT, RIGHT
-    }
 
-    public class Point {
-        int x, y;
 
-        Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
 
     /**
      *
-     * @param primaryStage the primary stage for this application, onto which
+     * primaryStage the primary stage for this application, onto which
      * the application scene can be set.
      * Applications may create other stages, if needed, but they will not be
      * primary stages.
